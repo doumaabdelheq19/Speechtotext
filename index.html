@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Continuous Speech-to-Text with French</title>
+</head>
+<body>
+    <h1>Continuous Speech-to-Text with French</h1>
+    <button id="start">Start Recording</button>
+    <button id="stop" >Stop Recording</button>
+    <div id="output"></div>
+
+    <script>
+      var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
+
+recognition.lang = 'fr-FR';
+recognition.interimResults = false;
+recognition.maxAlternatives = 1;
+recognition.continuous = true;
+
+var transcript = '';
+
+recognition.onresult = function(event) {
+  transcript += event.results[event.resultIndex][0].transcript;
+  document.getElementById('output').textContent = transcript;
+};
+
+recognition.onerror = function(event) {
+  console.error('Speech recognition error', event.error);
+};
+
+recognition.onend = function() {
+  console.log('Speech recognition ended');
+};
+
+document.getElementById('start').addEventListener('click', function() {
+  recognition.start();
+});
+
+document.getElementById('stop').addEventListener('click', function() {
+  recognition.stop();
+});
+    </script>
+</body>
+</html>
